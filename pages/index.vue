@@ -24,7 +24,7 @@
 							</nuxt-link>
 						</a-list-item-meta>
 						<div class="content">
-							{{item.body}}
+							{{item.body | matchTag}}
 						</div>
 					</a-list-item>
 				</a-list>
@@ -77,6 +77,11 @@ export default {
 	mounted(){
 		console.log(this.listData)
 		this.pagination.total = this.total;
+	},
+	filters: {
+		matchTag(value){
+			return value.replace(/<\/?.+?\/?>/g,'')
+		}
 	}
 };
 </script>

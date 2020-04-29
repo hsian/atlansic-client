@@ -53,8 +53,8 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    // baseURL: "http://49.234.206.77:9997"
-    baseURL: process.env.NODE_ENV == "development" ? "http://localhost:5000" : "http://atl-api.atlansic.com"
+    baseURL: "http://49.234.206.77:9997"
+    // baseURL: process.env.NODE_ENV == "development" ? "http://localhost:5000" : "http://atl-api.atlansic.com"
   },
   /*
   ** Build configuration
