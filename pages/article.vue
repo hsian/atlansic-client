@@ -237,7 +237,13 @@ export default {
         font-weight: bold;
     }
 
-    /deep/ h1, /deep/ h2, /deep/ h3, /deep/ h4{
+    /deep/ blockquote{
+        background: #eeee;
+        padding: 10px 20px;
+        border-left: 2px #333 solid;
+    }
+
+    /deep/ h2, /deep/ h3, /deep/ h4{
         font-weight: bold;
         margin-top: 50px;
     }
