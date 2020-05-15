@@ -24,7 +24,7 @@
 							</nuxt-link>
 						</a-list-item-meta>
 						<div class="content">
-							{{item.body | matchTag}}
+							{{item.body_html | matchTag}}
 						</div>
 					</a-list-item>
 				</a-list>
@@ -35,6 +35,8 @@
 
 <script>
 import moment from "moment";
+moment.locale('zh-CN');
+
 export default {
 	async asyncData(ctx){
 		const res = await ctx.$axios({
@@ -75,11 +77,11 @@ export default {
         };
 	},
 	mounted(){
-		console.log(this.listData)
 		this.pagination.total = this.total;
 	},
 	filters: {
 		matchTag(value){
+			if(!value) return ``;
 			return value.replace(/<\/?.+?\/?>/g,'')
 		}
 	}
@@ -102,7 +104,7 @@ export default {
 .content{
 	display: -webkit-box;
 	-webkit-box-orient: vertical;
-	-webkit-line-clamp: 2s;
+	-webkit-line-clamp: 2;
 	overflow: hidden;
 	font-size: 16px;
 }

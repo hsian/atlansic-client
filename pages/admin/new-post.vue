@@ -17,13 +17,11 @@
 
             <a-form-model-item prop="body">
                 <client-only>
-                    <editor
-                        class="editor"
-                        :editorToolbar="customToolbar"
-                        useCustomImageHandler
-                        @image-added="handleImageAdded"
-                        v-model="form.body"
-                    />
+                    <mavon-editor style="min-height: 500px" 
+                    ref="md" 
+                    @imgAdd="handleImageAdded"
+                    :toolbars="toolbars" 
+                    v-model="form.body"/>                  
                 </client-only>
             </a-form-model-item>
 
@@ -39,19 +37,45 @@ export default {
     layout: 'admin',
     data(){
         return {
-            customToolbar: [
-                ['bold', 'italic', 'underline', 'strike'],        // toggled buttons
-                ['blockquote', 'code-block'],
-                ['image', 'video'],
-                [{ 'header': 1 }, { 'header': 2 }],               // custom button values
-                [{ 'list': 'ordered'}, { 'list': 'bullet' }],
-                [{ 'script': 'sub'}, { 'script': 'super' }],      // superscript/subscript
-                [{ 'indent': '-1'}, { 'indent': '+1' }],          // outdent/indent
-                [{ 'direction': 'rtl' }],                         // text direction
-            ],
+            toolbars: {
+                bold: true, // 粗体
+                italic: true, // 斜体
+                header: true, // 标题
+                underline: true, // 下划线
+                strikethrough: true, // 中划线
+                mark: true, // 标记
+                superscript: true, // 上角标
+                subscript: true, // 下角标
+                quote: true, // 引用
+                ol: true, // 有序列表
+                ul: true, // 无序列表
+                link: true, // 链接
+                imagelink: true, // 图片链接
+                code: true, // code
+                table: true, // 表格
+                fullscreen: true, // 全屏编辑
+                readmodel: true, // 沉浸式阅读
+                htmlcode: true, // 展示html源码
+                help: true, // 帮助
+                /* 1.3.5 */
+                undo: true, // 上一步
+                redo: true, // 下一步
+                trash: true, // 清空
+                save: true, // 保存（触发events中的save事件）
+                /* 1.4.2 */
+                navigation: true, // 导航目录
+                /* 2.1.8 */
+                alignleft: true, // 左对齐
+                aligncenter: true, // 居中
+                alignright: true, // 右对齐
+                /* 2.2.1 */
+                subfield: true, // 单双栏模式
+                preview: true, // 预览
+            },
             form: {
                 title: "",
-                body: "",
+                body: ``,
+                body_html: "",
                 category_id: ""
             },
             categories: [],
@@ -71,7 +95,7 @@ export default {
         this.options = categories;
     },
     methods: {
-        handleImageAdded(file, Editor, cursorLocation, resetUploader){
+        handleImageAdded(pos, file){
             const {token} = this.$store.state.user;
             const formData = new FormData();
             formData.append("file", file);
@@ -85,8 +109,7 @@ export default {
                 data: formData
             }).then(result => {
                 let url = this.$axios.defaults.baseURL + result.data.url;
-                Editor.insertEmbed(cursorLocation, "image", url);
-                resetUploader();
+                this.$refs.md.$img2Url(pos, url);
             })
         },
         handleCategory(value){
@@ -94,6 +117,7 @@ export default {
         },
         handleSubmit(){
             const {token} = this.$store.state.user;
+            this.form.body_html = document.querySelector(".v-show-content").innerHTML;
             this.$refs.form.validate(valid => {
                 if(!valid) return;
                 
@@ -116,7 +140,6 @@ export default {
 
 <style scoped lang="less">
 .form {
-    max-width: 950px;
     margin:0 auto;
 
     /deep/ .ant-form-item-control {
@@ -136,5 +159,9 @@ export default {
 
 /deep/ .ql-editor {
     min-height: 500px;
+}
+
+/deep/ .v-note-wrapper{
+    z-index: 999;
 }
 </style>

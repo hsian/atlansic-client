@@ -5,7 +5,7 @@ export default {
   ** Headers of the page
   */
   head: {
-    title: 'atlansic的博客',
+    title: 'hsian的个人博客 - atlansic.com',
     meta: [
       { charset: 'utf-8' },
       { name: 'viewport', content: 'width=device-width, initial-scale=1' },
@@ -13,7 +13,8 @@ export default {
       { hid: 'description', name: 'description', content: 'atlansic的博客是一个关注前端技术的网站, 分享HTML、CSS、Javascript、typescript、Nodejs等编程技术' }
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' }
+      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'stylesheet', type: 'text/css', href: 'http://cdn.bootcss.com/highlight.js/8.0/styles/monokai_sublime.min.css'}
     ]
   },
   /*
@@ -32,9 +33,10 @@ export default {
   */
   plugins: [
     '@/plugins/antd-ui',
-    '@/plugins/editor.client.js',
+    // '@/plugins/editor.client.js',
     '@/plugins/axios.js',
-    { src: '~/plugins/localStorage.js', ssr: false }
+    { src: '~/plugins/localStorage.js', ssr: false },
+    { src: '@/plugins/editor.client.js', ssr: false }
   ],
   /*
   ** Nuxt.js dev-modules
@@ -53,8 +55,8 @@ export default {
   ** See https://axios.nuxtjs.org/options
   */
   axios: {
-    baseURL: "http://49.234.206.77:9997"
-    // baseURL: process.env.NODE_ENV == "development" ? "http://localhost:5000" : "http://atl-api.atlansic.com"
+    // baseURL: "http://49.234.206.77:9997"
+    baseURL: process.env.NODE_ENV == "development" ? "http://127.0.0.1:5000" : "http://atl-api.atlansic.com"
   },
   /*
   ** Build configuration

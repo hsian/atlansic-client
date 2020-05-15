@@ -40,7 +40,7 @@
                 <a-form-model-item label="描述">
                     <a-textarea v-model="form.summary" :row="3"/>
                 </a-form-model-item>
-                <a-form-model-item label="状态" v-if="actionType === `edit`">
+                <a-form-model-item label="打开" v-if="actionType === `edit`">
                     <a-switch :defaultChecked="form.enable" @change="handleEnableChange" />
                 </a-form-model-item>
             </a-form-model>   
@@ -116,6 +116,7 @@ export default {
             this.dialogFormVisible = false;
         },
         handleEdit(item) {
+            console.log(12)
             this.actionType = "edit";
             this.visible = true;
             const {id, name, summary, enable} = item;

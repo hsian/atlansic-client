@@ -6,10 +6,10 @@
                     <div v-for="(item, index) in posts" :key="index">
                         <h1>{{item.title}}</h1>
                         <p>发表于 {{moment(item.timestamp).fromNow()}}</p>
-                        <div v-html="item.body"></div>
+                        <div v-html="item.body_html"></div>
                         <a-divider style="background: #eee" />
                     </div>
-                    <h1>评论</h1>
+                    <h3><b>留言</b></h3>
 
                     <CommentItem :comments="comments" @reply="handleReply"/>
 
@@ -56,7 +56,8 @@
                     </a-form-model>
                 </div>
                 <div class="empty" v-else>
-                    当前栏目下暂无文章
+                    <p>{{categories[0] && categories[0].summary }}</p>
+                    <p>当前栏目下暂无文章</p>
                 </div>
             </a-col>
             <a-col :xs="24" :md="24" :lg="6" class="aside">
@@ -76,7 +77,7 @@ moment.locale('zh-CN');
 export default {
     head(){
         return{
-            title: this.$route.query.name + '-atlansic的博客'
+            title: (this.$route.query.name || `hsian的个人博客`) + ' - hsian的个人博客 - atlansic.com'
         }
     },
     async asyncData({query, $axios}){
@@ -192,7 +193,6 @@ export default {
             }
         },
         handleReply(item){
-            console.log("parent")
             this.placeholder = "@:" + item.temp_name;
             this.helpTips = "正在回复" + item.temp_name;
             this.form.parent_id = item.id; 
@@ -227,9 +227,28 @@ export default {
 }
 
 .main-content {
+    font-size: 16px;
+    line-height: 1.8;
+    color: #333;
+
     h1 {
         font-size: 22px;
         color: #333;
+        font-weight: bold;
+    }
+
+    /deep/ h1, /deep/ h2, /deep/ h3, /deep/ h4{
+        font-weight: bold;
+        margin-top: 50px;
+    }
+
+    /deep/ ul, /deep/ ol{
+        padding-left: 20px;
+    }
+
+    /deep/ .hljs{
+        padding: 20px;
+        border-radius: 4px;
     }
 
     /deep/ .ant-form-explain{
@@ -243,11 +262,5 @@ export default {
         font-size: 18px;
         font-weight: bold;
     }
-}
-
-.empty{
-    color: #999;
-    line-height: 200px;
-    text-align: center;
 }
 </style>

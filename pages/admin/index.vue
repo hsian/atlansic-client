@@ -14,7 +14,9 @@
                 <a-list-item-meta :description="item.category.name">
                     <a slot="title" :href="item.href">{{ item.title }}</a>
                 </a-list-item-meta>
-                <div class="content" v-html="item.body"></div>
+                <div class="content">
+                    {{item.body_html | matchTag}}
+                </div>
             </a-list-item>
         </a-list>
     </div>
@@ -67,7 +69,13 @@ export default {
             this.pagination.total = count;
             this.listData = posts;
         }
-    }
+    },
+    filters: {
+		matchTag(value){
+			if(!value) return ``;
+			return value.replace(/<\/?.+?\/?>/g,'')
+		}
+	}
 };
 </script>
 
